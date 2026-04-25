@@ -390,6 +390,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 .hero-shot {
   position: relative;
+  display: block;
   border-radius: 4px;
   overflow: hidden;
   background: #fff;
@@ -399,15 +400,18 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     0 12px 28px -16px rgba(0,0,0,0.7),
     0 4px 10px -6px rgba(0,0,0,0.5);
   aspect-ratio: 16 / 11;
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 .hero-shot:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow:
     0 1px 0 rgba(255,255,255,0.04) inset,
     0 18px 36px -16px rgba(0,0,0,0.8),
     0 6px 14px -6px rgba(0,0,0,0.6);
 }
+.hero-shot:hover .chrome .label { color: var(--red); }
+.hero-shot:active { transform: translateY(-1px); }
 .hero-shot .chrome {
   position: absolute;
   top: 0; left: 0; right: 0;
@@ -1818,27 +1822,27 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
           </div>
 
           <div class="hero-stack">
-            <div class="hero-shot">
+            <a class="hero-shot" href="#case-faculty-flow" aria-label="Read the Faculty Flow case study">
               <div class="chrome"><span></span><span></span><span class="label">Faculty Flow</span></div>
               <img src="img/facultyflow.png" alt="Faculty Flow credentialing dashboard" loading="eager">
-            </div>
-            <div class="hero-shot">
-              <div class="chrome"><span></span><span></span><span class="label">Portfolio</span></div>
-              <img src="img/portfolio.png" alt="Program Portfolio Decision Engine" loading="eager">
-            </div>
-            <div class="hero-shot">
+            </a>
+            <a class="hero-shot" href="#case-lift" aria-label="Read the LiFT Assessment case study">
               <div class="chrome"><span></span><span></span><span class="label">LiFT</span></div>
               <img src="img/lift.png" alt="LiFT Assessment Portal" loading="eager">
-            </div>
-            <div class="hero-shot">
+            </a>
+            <a class="hero-shot" href="#case-portfolio" aria-label="Read the Portfolio Engine case study">
+              <div class="chrome"><span></span><span></span><span class="label">Portfolio</span></div>
+              <img src="img/portfolio.png" alt="Program Portfolio Decision Engine" loading="eager">
+            </a>
+            <a class="hero-shot" href="#case-network" aria-label="Read the Network Partner Hub case study">
               <div class="chrome"><span></span><span></span><span class="label">Network Hub</span></div>
               <img src="img/network-crm.png" alt="Network Partner Hub CRM" loading="eager">
-            </div>
+            </a>
           </div>
 
           <div class="hero-case-caption">
             <span class="big">Four platforms, in production today.</span>
-            <span class="meta">Credentialing · Assessment · Analytics · Partner CRM</span>
+            <span class="meta">Tap any to read the case &rarr;</span>
           </div>
         </aside>
       </div>
@@ -2011,7 +2015,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   </div>
 
   <!-- Case 01 — Faculty Flow -->
-  <article class="case">
+  <article class="case" id="case-faculty-flow">
     <div class="wrap">
       <div class="case-grid">
         <div class="case-meta reveal">
@@ -2051,7 +2055,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   </article>
 
   <!-- Case 02 — LiFT -->
-  <article class="case">
+  <article class="case" id="case-lift">
     <div class="wrap">
       <div class="case-grid">
         <div class="case-meta reveal">
@@ -2091,7 +2095,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   </article>
 
   <!-- Case 03 — Portfolio Engine -->
-  <article class="case">
+  <article class="case" id="case-portfolio">
     <div class="wrap">
       <div class="case-grid">
         <div class="case-meta reveal">
@@ -2131,7 +2135,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   </article>
 
   <!-- Case 04 — Network Partner Hub -->
-  <article class="case">
+  <article class="case" id="case-network">
     <div class="wrap">
       <div class="case-grid">
         <div class="case-meta reveal">
