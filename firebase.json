@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "redtech-strategy",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebase",
+      ".firebaserc"
+    ]
+  }
+}

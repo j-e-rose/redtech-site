@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REDTech Solutions — Software for institutions that matter</title>
+<meta name="description" content="REDTech Solutions designs and builds custom web applications, data platforms, and cloud infrastructure for higher education and mission-driven organizations.">
+<meta name="theme-color" content="#fafafa">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────
+   TOKENS — warm editorial palette
+───────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  /* Surfaces — neutral, modern off-whites */
+  --paper: #fafafa;
+  --paper-2: #f2f2f2;
+  --paper-3: #e8e8e8;
+  --ink: #0d0d0e;
+  --ink-2: #1f1f22;
+  --muted: #74747a;
+  --faint: #b4b4b8;
+  --rule: #0d0d0e;
+  --rule-soft: rgba(13,13,14,0.10);
+  --rule-faint: rgba(13,13,14,0.05);
+
+  /* Red — used as micro-accent only */
+  --red: #e5322c;
+  --red-deep: #b8241f;
+  --red-ink: #5a0a17;
+
+  --dark-paper: #0d0d0e;
+
+  /* Fonts — all sans, tight, modern */
+  --serif: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+  --sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
+}
+
+body {
+  overflow-x: hidden;
+  background: var(--paper);
+}
+
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+::selection { background: var(--ink); color: var(--paper); }
+
+/* Grain removed for a cleaner modern feel */
+
+/* ─────────────────────────────────────────────────
+   UTILITIES
+───────────────────────────────────────────────── */
+.wrap {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+  position: relative;
+  z-index: 2;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.serif { font-family: var(--serif); font-weight: 400; font-style: normal; letter-spacing: -0.01em; }
+.serif-i { font-family: var(--serif); font-style: italic; }
+
+.rule { height: 1px; background: var(--rule); width: 100%; }
+.rule-soft { height: 1px; background: var(--rule-soft); width: 100%; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+.reveal.vis { opacity: 1; transform: none; }
+.rd-1 { transition-delay: 0.06s; }
+.rd-2 { transition-delay: 0.12s; }
+.rd-3 { transition-delay: 0.18s; }
+.rd-4 { transition-delay: 0.24s; }
+.rd-5 { transition-delay: 0.30s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ─────────────────────────────────────────────────
+   NAV
+───────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  transition: box-shadow 0.3s var(--ease);
+}
+.nav.scrolled { box-shadow: 0 6px 24px -12px rgba(0,0,0,0.15); }
+
+.nav-inner {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 1rem clamp(1.25rem, 3vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+.logo-mark {
+  width: 30px; height: 30px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  letter-spacing: -0.02em;
+}
+.logo-text { display: flex; flex-direction: column; line-height: 1; }
+.logo-text b { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
+.logo-text span { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+.nav-links a {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  padding: 0.5rem 0.9rem;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.nav-links a:hover { background: var(--paper-2); }
+.nav-cta {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+  padding: 0.55rem 1rem !important;
+  margin-left: 0.75rem;
+}
+.nav-cta:hover { background: var(--red) !important; }
+.nav-cta .arr { transition: transform 0.25s var(--ease); }
+.nav-cta:hover .arr { transform: translate(2px, -2px); }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+}
+.nav-toggle span {
+  width: 20px; height: 1.5px;
+  background: var(--ink);
+  transition: transform 0.25s, opacity 0.25s;
+}
+
+/* ─────────────────────────────────────────────────
+   HERO — editorial, confident, no floating abstract art
+───────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  padding: clamp(3rem, 7vw, 6rem) 0 clamp(3rem, 6vw, 5rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule-soft);
+  flex-wrap: wrap;
+}
+.hero-dateline {
+  display: flex;
+  gap: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.hero-dateline strong { color: var(--ink); font-weight: 500; }
+.hero-dateline .dot { color: var(--red); }
+
+.hero-issue {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-headline {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 6.8vw, 5.8rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  max-width: 24ch;
+}
+.hero-headline em {
+  font-style: normal;
+  color: var(--muted);
+  font-weight: 500;
+}
+.hero-headline .amp {
+  font-style: normal;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.hero-body {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  align-items: start;
+}
+
+.hero-lede {
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 48ch;
+  font-weight: 400;
+}
+.hero-lede em { color: var(--ink); font-style: normal; font-weight: 500; }
+.hero-lede-note {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0 0;
+  border-top: 1px dashed var(--rule-soft);
+}
+.hero-lede-note .mono { color: var(--red); }
+
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.3rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  border-radius: 2px;
+  transition: all 0.25s var(--ease);
+  border: 1px solid var(--ink);
+}
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: var(--red); border-color: var(--red); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--paper); }
+.btn .arr { transition: transform 0.25s var(--ease); }
+.btn:hover .arr { transform: translate(2px, -2px); }
+
+/* Hero right: a mosaic of real product screenshots */
+.hero-case {
+  background: var(--dark-paper);
+  color: var(--paper);
+  padding: 1.5rem;
+  border-radius: 3px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 440px;
+  overflow: hidden;
+}
+.hero-case::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--red);
+}
+.hero-case-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+.hero-case-head .live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #75e095;
+}
+.hero-case-head .live::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: #75e095;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(117,224,149,0.6);
+  animation: pulse 2s ease-out infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(117,224,149,0.55); }
+  70% { box-shadow: 0 0 0 8px rgba(117,224,149,0); }
+  100% { box-shadow: 0 0 0 0 rgba(117,224,149,0); }
+}
+
+.hero-stack {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.6rem;
+  min-height: 0;
+}
+.hero-shot {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 12px 28px -16px rgba(0,0,0,0.7),
+    0 4px 10px -6px rgba(0,0,0,0.5);
+  aspect-ratio: 16 / 11;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.hero-shot:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 18px 36px -16px rgba(0,0,0,0.8),
+    0 6px 14px -6px rgba(0,0,0,0.6);
+}
+.hero-shot .chrome {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 18px;
+  background: #f4f4f5;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 7px;
+  z-index: 2;
+}
+.hero-shot .chrome::before,
+.hero-shot .chrome::after,
+.hero-shot .chrome span {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.18);
+}
+.hero-shot .chrome::before { background: var(--red); opacity: 0.85; }
+.hero-shot .chrome .label {
+  margin-left: auto;
+  width: auto; height: auto;
+  background: none;
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.5);
+  border-radius: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  max-width: 65%;
+  line-height: 1;
+}
+.hero-shot img {
+  position: absolute;
+  top: 18px; left: 0;
+  width: 100%;
+  height: calc(100% - 18px);
+  object-fit: cover;
+  object-position: top left;
+  display: block;
+}
+
+.hero-case-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.hero-case-caption .big {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: -0.015em;
+  color: var(--paper);
+  line-height: 1.3;
+}
+.hero-case-caption .meta {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ─────────────────────────────────────────────────
+   PILLARS — horizontal chips row
+───────────────────────────────────────────────── */
+.pillars {
+  padding: 2rem 0;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+}
+.pillars-inner {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.pillar {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+.pillar .n {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--red);
+  letter-spacing: 0.14em;
+  font-weight: 500;
+}
+.pillar .t {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* ─────────────────────────────────────────────────
+   STATS — editorial big-number section
+───────────────────────────────────────────────── */
+.stats {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.stats-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: end;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.stats-head h2 {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  max-width: 22ch;
+}
+.stats-head h2 em { font-style: normal; color: var(--muted); font-weight: 500; }
+.stats-head p {
+  color: var(--muted);
+  max-width: 42ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat {
+  padding: 1.5rem 1.5rem 1.5rem 0;
+  position: relative;
+  border-right: 1px solid var(--rule-soft);
+}
+.stat:last-child { border-right: none; }
+.stat:not(:first-child) { padding-left: 1.5rem; }
+
+.stat .n {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  line-height: 0.95;
+  color: var(--ink);
+  letter-spacing: -0.045em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.05em;
+  margin-bottom: 0.75rem;
+}
+.stat .n em { font-style: normal; color: var(--ink); font-weight: 500; }
+.stat .n .unit {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-left: 0.4rem;
+}
+.stat .l {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  line-height: 1.4;
+  max-width: 22ch;
+}
+.stat .k {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+}
+
+/* ─────────────────────────────────────────────────
+   SERVICES
+───────────────────────────────────────────────── */
+.services {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.section-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: end;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2.5rem;
+}
+.section-head .section-num {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  padding-bottom: 0.5rem;
+}
+.section-head h2 {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.section-head h2 em { font-style: normal; color: var(--muted); font-weight: 500; }
+.section-head .caption {
+  text-align: right;
+  max-width: 30ch;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.svc {
+  grid-column: span 2;
+  padding: 2rem 2rem 2rem 0;
+  border-right: 1px solid var(--rule-soft);
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background 0.25s;
+  min-height: 280px;
+}
+.svc:nth-child(3n) { border-right: none; }
+.svc:nth-child(n+4) { padding-bottom: 2rem; }
+.svc:hover { background: var(--paper-2); }
+.svc:not(:first-child) { padding-left: 2rem; }
+.svc:nth-child(3n+1) { padding-left: 0; }
+
+.svc-n {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.svc-n .sym {
+  width: 28px; height: 28px;
+  background: var(--paper-2);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+}
+.svc:hover .svc-n .sym { background: var(--red); color: var(--paper); }
+
+.svc h3 {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.35rem;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  color: var(--ink);
+}
+.svc h3 em { font-style: normal; color: var(--muted); font-weight: 500; }
+.svc p {
+  font-size: 0.92rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+.svc-tags {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--rule-soft);
+}
+.svc-tags span {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.svc-tags span::before {
+  content: '// ';
+  color: var(--red);
+  opacity: 0.7;
+}
+
+/* ─────────────────────────────────────────────────
+   CASES — portfolio as magazine features
+───────────────────────────────────────────────── */
+.cases {
+  padding: clamp(3rem, 7vw, 6rem) 0 0;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+
+.case {
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  border-bottom: 1px solid var(--rule-soft);
+  position: relative;
+}
+.case:last-child { border-bottom: none; }
+
+.case-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+}
+.case:nth-child(even) .case-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+}
+.case:nth-child(even) .case-meta {
+  order: 2;
+}
+
+.case-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: 5rem;
+}
+
+.case-idx {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.case-idx strong { color: var(--red); font-weight: 500; }
+.case-idx .sep { color: var(--faint); }
+.case-idx .tag {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.2rem 0.55rem;
+  border-radius: 2px;
+  font-size: 0.6rem;
+}
+
+.case-title {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+.case-title em { font-style: normal; color: var(--muted); font-weight: 500; }
+.case-title .sm {
+  display: block;
+  font-size: 0.6em;
+  color: var(--muted);
+  margin-top: 0.4em;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.case-lede {
+  font-size: 1rem;
+  color: var(--ink-2);
+  line-height: 1.65;
+  max-width: 46ch;
+}
+
+.case-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule-soft);
+  margin-top: 0.5rem;
+}
+.case-kpi { display: flex; flex-direction: column; gap: 0.2rem; }
+.case-kpi .v {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.case-kpi .v em { font-style: normal; color: var(--ink); font-weight: 500; }
+.case-kpi .k {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.case-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.case-stack span::before { content: '/ '; color: var(--red); }
+
+.case-shot {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.03),
+    0 30px 60px -30px rgba(0,0,0,0.25),
+    0 60px 100px -50px rgba(0,0,0,0.15);
+  transform: translateZ(0);
+}
+.case-shot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+}
+.case-shot .chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.case-shot .chrome .dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--rule-soft);
+}
+.case-shot .chrome .dot:first-child { background: var(--red); }
+.case-shot .chrome .url {
+  margin-left: auto;
+  padding: 0.2rem 0.6rem;
+  background: var(--paper-2);
+  border-radius: 3px;
+}
+.case-shot img {
+  width: 100%;
+  display: block;
+}
+
+.case-shot-note {
+  position: absolute;
+  bottom: -14px;
+  right: 24px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0.8rem;
+  border-radius: 2px;
+  z-index: 3;
+  text-transform: uppercase;
+}
+.case-shot-note .red { color: #ff6b7a; }
+
+/* ─────────────────────────────────────────────────
+   QUOTE — pull quote in the middle
+───────────────────────────────────────────────── */
+.pullquote {
+  padding: clamp(4rem, 9vw, 7rem) 0;
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+.pullquote::before { display: none; }
+.pullquote-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+  position: relative;
+  z-index: 2;
+}
+.pullquote-body {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  max-width: 28ch;
+  margin-bottom: 2.5rem;
+}
+.pullquote-body em { font-style: normal; color: rgba(255,255,255,0.55); font-weight: 400; }
+.pullquote-attr {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.pullquote-attr .avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.pullquote-attr .who { display: flex; flex-direction: column; gap: 0.2rem; }
+.pullquote-attr .who b { font-weight: 500; font-size: 0.95rem; letter-spacing: -0.01em; }
+.pullquote-attr .who span { font-family: var(--mono); font-size: 0.7rem; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ─────────────────────────────────────────────────
+   PROCESS — vertical, detailed
+───────────────────────────────────────────────── */
+.process {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.process-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 1rem;
+}
+
+.phase {
+  display: grid;
+  grid-template-columns: 1.3fr 0.25fr 2fr 1fr;
+  gap: 2rem;
+  padding: 2.25rem 0;
+  border-top: 1px solid var(--rule-soft);
+  align-items: start;
+  position: relative;
+  transition: background 0.3s;
+}
+.phase:hover { background: var(--paper-2); }
+.phase:last-child { border-bottom: 1px solid var(--rule-soft); }
+
+.phase-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.phase-label .big {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.phase-label .big em { font-style: normal; color: var(--muted); font-weight: 500; }
+.phase-label .sub {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.phase-tick {
+  position: relative;
+  padding-top: 0.5rem;
+}
+.phase-tick::before {
+  content: '';
+  width: 10px; height: 10px;
+  background: var(--red);
+  border-radius: 50%;
+  display: block;
+}
+
+.phase-body h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.phase-body p {
+  font-size: 0.94rem;
+  color: var(--ink-2);
+  line-height: 1.65;
+  max-width: 48ch;
+}
+.phase-delivers {
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.phase-delivers b {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+.phase-delivers span {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.15rem 0;
+}
+.phase-delivers span::before {
+  content: '→';
+  color: var(--red);
+  font-size: 0.8rem;
+}
+
+/* ─────────────────────────────────────────────────
+   NOT-DOING — honest differentiation
+───────────────────────────────────────────────── */
+.honest {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+}
+.honest-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+.honest-col h3 {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.honest-col h3 .mark {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.honest-col.yes h3 .mark { background: var(--ink); color: var(--paper); }
+.honest-col.no h3 .mark { background: var(--red); color: var(--paper); }
+
+.honest-list { display: flex; flex-direction: column; gap: 0; }
+.honest-list li {
+  padding: 1rem 0;
+  border-bottom: 1px dashed var(--rule-soft);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: baseline;
+}
+.honest-list li .idx {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.honest-list li .t {
+  font-size: 0.98rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.honest-list li .t em { font-style: normal; color: var(--muted); }
+
+/* ─────────────────────────────────────────────────
+   ABOUT — editorial
+───────────────────────────────────────────────── */
+.about {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.about-portrait {
+  aspect-ratio: 3/4;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.about-portrait::before { display: none; }
+.about-portrait-head {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+}
+.about-portrait-init {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(5rem, 10vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  color: var(--ink);
+  text-align: center;
+  margin: 1rem 0;
+  position: relative;
+  z-index: 2;
+}
+.about-portrait-init em { font-style: normal; color: var(--muted); font-weight: 500; }
+.about-portrait-foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule-soft);
+}
+.about-portrait-foot .who b {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.about-portrait-foot .who span {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.about-portrait-foot .sig { display: none; }
+
+.about-text h3 {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+.about-text h3 em { font-style: normal; color: var(--muted); font-weight: 500; }
+
+.about-text p {
+  font-size: 1rem;
+  color: var(--ink-2);
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  max-width: 56ch;
+}
+.about-text p.drop::first-letter { /* drop cap removed */ }
+
+.about-fact {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule-soft);
+  margin: 2rem 0 1.5rem;
+}
+.about-fact .f {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.about-fact .f b {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.about-fact .f span {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ─────────────────────────────────────────────────
+   CTA
+───────────────────────────────────────────────── */
+.cta {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--ink);
+}
+.cta::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--red);
+}
+
+.cta-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+.cta-title {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+.cta-title em { font-style: normal; color: rgba(255,255,255,0.55); font-weight: 500; }
+
+.cta-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.cta-contact a {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: color 0.2s;
+}
+.cta-contact a:last-child { border-bottom: none; }
+.cta-contact a:hover { color: #ff6b7a; }
+.cta-contact a .k {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.cta-contact a .v {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: -0.015em;
+}
+.cta-contact a .v em { font-style: normal; }
+.cta-contact a .arr { opacity: 0.5; transition: all 0.25s var(--ease); }
+.cta-contact a:hover .arr { transform: translate(3px, -3px); opacity: 1; }
+
+.cta-side-note {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cta-side-note::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: #75e095;
+  border-radius: 50%;
+  animation: pulse 2s ease-out infinite;
+}
+
+/* ─────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────── */
+.foot {
+  padding: 3rem 0 1.5rem;
+  background: var(--paper);
+}
+.foot-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.foot-brand .logo { margin-bottom: 1rem; }
+.foot-brand p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  max-width: 36ch;
+  line-height: 1.55;
+}
+.foot-col h5 {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+.foot-col ul { display: flex; flex-direction: column; gap: 0.5rem; }
+.foot-col a, .foot-col li { font-size: 0.88rem; color: var(--ink-2); transition: color 0.2s; }
+.foot-col a:hover { color: var(--red); }
+.foot-bar {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ─────────────────────────────────────────────────
+   CLIENTS STRIP — named social proof
+───────────────────────────────────────────────── */
+.clients {
+  padding: 2.25rem 0;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.clients-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.clients-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+.clients-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: #75e095;
+  border-radius: 50%;
+  animation: pulse 2s ease-out infinite;
+}
+.clients-list {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem 1.25rem;
+  flex-wrap: wrap;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(0.98rem, 1.3vw, 1.15rem);
+  color: var(--ink);
+  letter-spacing: -0.018em;
+}
+.clients-list .c {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+}
+.clients-list .c:hover { border-bottom-color: var(--ink); }
+.clients-list .sep { color: var(--faint); font-weight: 300; }
+
+/* ─────────────────────────────────────────────────
+   ENGAGEMENT — 3 tiers, SaaS pricing-page pattern
+───────────────────────────────────────────────── */
+.engage {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+}
+.engage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.engage-card {
+  padding: 2.25rem 2rem 2rem 0;
+  border-right: 1px solid var(--rule-soft);
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 440px;
+  transition: background 0.25s;
+  position: relative;
+}
+.engage-card:not(:first-child) { padding-left: 2rem; }
+.engage-card:last-child { border-right: none; }
+.engage-card:hover { background: var(--paper-2); }
+.engage-card.featured::after {
+  content: 'Most common';
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--red);
+  border-radius: 2px;
+}
+
+.engage-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+.engage-n {
+  width: 32px; height: 32px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0;
+}
+.engage-card:hover .engage-n { background: var(--red); }
+.engage-tag {
+  padding: 0.3rem 0.6rem;
+  border-radius: 2px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.engage-card:hover .engage-tag { background: var(--paper-3); }
+
+.engage-card h3 {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.4rem;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.engage-card > p {
+  font-size: 0.92rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  max-width: 40ch;
+}
+.engage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  border-top: 1px dashed var(--rule-soft);
+  margin-top: auto;
+}
+.engage-list li {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  line-height: 1.4;
+}
+.engage-list li::before {
+  content: '→';
+  color: var(--red);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+.engage-foot {
+  border-top: 1px solid var(--rule-soft);
+  padding-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.engage-foot .price {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--red);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────────
+   FAQ — accordion with crisp plus-minus
+───────────────────────────────────────────────── */
+.faq {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+}
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--rule);
+}
+.faq-item {
+  border-bottom: 1px solid var(--rule-soft);
+  transition: background 0.2s;
+}
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(1.02rem, 1.55vw, 1.22rem);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.3;
+  padding: 1.5rem 0.25rem 1.5rem 0;
+  transition: color 0.2s;
+}
+.faq-item summary:hover { color: var(--red); }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::marker { display: none; }
+.faq-num {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  min-width: 2rem;
+}
+
+.faq-plus {
+  position: relative;
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+}
+.faq-plus::before, .faq-plus::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  left: 50%; top: 50%;
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+.faq-plus::before { width: 14px; height: 1.5px; transform: translate(-50%, -50%); }
+.faq-plus::after { width: 1.5px; height: 14px; transform: translate(-50%, -50%); }
+.faq-item[open] .faq-plus::after { transform: translate(-50%, -50%) rotate(90deg); opacity: 0; }
+.faq-item[open] summary { color: var(--red); }
+
+.faq-body {
+  padding: 0 3rem 1.75rem 3.5rem;
+  max-width: 78ch;
+  font-size: 0.98rem;
+  color: var(--ink-2);
+  line-height: 1.7;
+  animation: faqFade 0.3s ease;
+}
+.faq-body a { color: var(--red); border-bottom: 1px solid var(--red); padding-bottom: 1px; }
+@keyframes faqFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+.faq-foot {
+  margin-top: 3rem;
+  padding: 1.75rem 0 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.faq-foot p {
+  font-size: 1rem;
+  color: var(--ink-2);
+  max-width: 50ch;
+  line-height: 1.5;
+}
+.faq-foot p b { color: var(--ink); font-weight: 500; }
+
+/* ─────────────────────────────────────────────────
+   NUMERIC POLISH — tabular figures everywhere
+───────────────────────────────────────────────── */
+.stat .n, .case-kpi .v, .hero-case-n, .hero-case-head, .hcr .meta,
+.about-portrait-init, .about-fact .f b,
+.phase-label .big, .cta-title {
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+/* ─────────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .hero-body { grid-template-columns: 1fr; }
+  .hero-case { min-height: 380px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-bottom: 1px solid var(--rule-soft); padding: 1.5rem; }
+  .stat:nth-child(2n) { border-right: none; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .svc { grid-column: span 1; padding: 2rem 1.25rem; border-right: 1px solid var(--rule-soft); }
+  .svc:nth-child(2n), .svc:nth-child(3n) { border-right: none; }
+  .svc:nth-child(2n) { border-right: none; }
+  .svc:nth-child(2n+1) { border-right: 1px solid var(--rule-soft); padding-left: 0; }
+  .case-grid, .case:nth-child(even) .case-grid { grid-template-columns: 1fr; }
+  .case:nth-child(even) .case-meta { order: 0; }
+  .case-meta { position: static; }
+  .phase { grid-template-columns: 1fr; gap: 1rem; padding: 2rem 0; }
+  .phase-tick { display: none; }
+  .engage-grid { grid-template-columns: 1fr; }
+  .engage-card { border-right: none; padding: 2rem 0 2rem 0; min-height: auto; }
+  .engage-card:not(:first-child) { padding-left: 0; }
+  .engage-card.featured::after { top: 2.25rem; right: 0; }
+  .faq-body { padding: 0 0 1.5rem 3.5rem; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-portrait { max-width: 420px; }
+  .honest-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .stats-head, .cta-inner { grid-template-columns: 1fr; }
+  .section-head { grid-template-columns: auto 1fr; }
+  .section-head .caption { grid-column: 1 / -1; text-align: left; padding-top: 0.5rem; }
+  .foot-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 920px) {
+  .nav-links { display: none; position: fixed; inset: 64px 0 auto 0; flex-direction: column; align-items: stretch; background: var(--paper); padding: 1rem clamp(1.25rem, 3vw, 2.5rem) 2rem; border-bottom: 1px solid var(--rule); gap: 0; }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 1rem 0; border-bottom: 1px solid var(--rule-soft); font-size: 1rem; border-radius: 0; }
+  .nav-links .nav-cta { margin: 1rem 0 0 !important; justify-content: center; }
+  .nav-toggle { display: flex; }
+}
+@media (max-width: 720px) {
+  .stats-grid, .services-grid, .case-kpis, .about-fact, .foot-top, .engage-grid { grid-template-columns: 1fr; }
+  .clients-inner { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .faq-item summary { grid-template-columns: auto 1fr auto; gap: 1rem; font-size: 1.02rem; }
+  .faq-body { padding: 0 0 1.5rem 2.75rem; }
+  .svc { border-right: none !important; padding-left: 0 !important; padding-right: 0 !important; }
+  .stat { padding: 1.5rem 0 !important; border-right: none !important; padding-left: 0 !important; }
+  .hero-top { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo" aria-label="REDTech Solutions home">
+      <span class="logo-mark">R</span>
+      <span class="logo-text">
+        <b>REDTech</b>
+        <span>Solutions · Lakeland, FL</span>
+      </span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#engage">Engagement</a>
+      <a href="#process">Process</a>
+      <a href="#faq">FAQ</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="nav-cta">
+        Book a call
+        <svg class="arr" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+      </a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-top">
+        <div class="hero-dateline">
+          <span><strong>Portfolio</strong></span>
+          <span class="dot">●</span>
+          <span>Lakeland, FL</span>
+          <span class="dot">●</span>
+          <span>2023–<strong>2026</strong></span>
+        </div>
+        <div class="hero-issue">Custom software for higher education</div>
+      </div>
+
+      <h1 class="hero-headline reveal">
+        Custom software<br>
+        for higher education<br>
+        <em>and mission-driven work.</em>
+      </h1>
+
+      <div class="hero-body">
+        <div class="reveal rd-1">
+          <p class="hero-lede">
+            REDTech Solutions designs and builds <em>custom web applications,</em> data platforms, and cloud infrastructure for higher education and mission-driven organizations — built around how you actually work, not how a vendor imagines you do.
+          </p>
+
+          <div class="hero-lede-note">
+            <span class="mono">A note on process —</span>
+            <span style="font-size: 0.92rem; color: var(--muted); line-height: 1.55; max-width: 44ch;">
+              We work in weeks, not quarters. You see working software inside the first month, and your team ships production workflows inside the first three.
+            </span>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#contact" class="btn primary">
+              Book a 30-min call
+              <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+            </a>
+            <a href="#work" class="btn ghost">
+              See selected work
+              <svg class="arr" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right column: real product mosaic -->
+        <aside class="hero-case reveal rd-2" aria-label="Selected platforms in production">
+          <div class="hero-case-head">
+            <span>Live portfolio</span>
+            <span class="live">Operational</span>
+          </div>
+
+          <div class="hero-stack">
+            <div class="hero-shot">
+              <div class="chrome"><span></span><span></span><span class="label">Faculty Flow</span></div>
+              <img src="img/facultyflow.png" alt="Faculty Flow credentialing dashboard" loading="eager">
+            </div>
+            <div class="hero-shot">
+              <div class="chrome"><span></span><span></span><span class="label">Portfolio</span></div>
+              <img src="img/portfolio.png" alt="Program Portfolio Decision Engine" loading="eager">
+            </div>
+            <div class="hero-shot">
+              <div class="chrome"><span></span><span></span><span class="label">LiFT</span></div>
+              <img src="img/lift.png" alt="LiFT Assessment Portal" loading="eager">
+            </div>
+            <div class="hero-shot">
+              <div class="chrome"><span></span><span></span><span class="label">Network Hub</span></div>
+              <img src="img/network-crm.png" alt="Network Partner Hub CRM" loading="eager">
+            </div>
+          </div>
+
+          <div class="hero-case-caption">
+            <span class="big">Four platforms, in production today.</span>
+            <span class="meta">Credentialing · Assessment · Analytics · Partner CRM</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pillars strip -->
+<div class="pillars">
+  <div class="wrap">
+    <div class="pillars-inner">
+      <div class="pillar"><span class="n">I.</span><span class="t">Web applications</span></div>
+      <div class="pillar"><span class="n">II.</span><span class="t">Cloud infrastructure</span></div>
+      <div class="pillar"><span class="n">III.</span><span class="t">Data & analytics</span></div>
+      <div class="pillar"><span class="n">IV.</span><span class="t">AI integration</span></div>
+      <div class="pillar"><span class="n">V.</span><span class="t">Automation</span></div>
+      <div class="pillar"><span class="n">VI.</span><span class="t">Consulting</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Clients strip — named social proof -->
+<div class="clients" aria-label="Clients served">
+  <div class="wrap">
+    <div class="clients-inner">
+      <span class="clients-label">Platforms running at</span>
+      <div class="clients-list">
+        <span class="c">Southeastern University</span>
+        <span class="sep">/</span>
+        <span class="c">LiFT Institute</span>
+        <span class="sep">/</span>
+        <span class="c">SEU Network Partners</span>
+        <span class="sep">/</span>
+        <span class="c">Mission-driven orgs nationwide</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-head">
+      <h2 class="reveal">
+        Three years of real, shipped work &mdash; <em>no pitch decks, no vaporware.</em>
+      </h2>
+      <p class="reveal rd-1">
+        Every number below represents software in production today, serving institutions that depend on it. The platforms run on infrastructure we built, deployed from pipelines we own, monitored by dashboards we read every morning.
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat reveal">
+        <div class="k">Platforms live</div>
+        <div class="n"><em>5</em><span class="unit">+</span></div>
+        <div class="l">Production systems, each serving a distinct institutional need.</div>
+      </div>
+      <div class="stat reveal rd-1">
+        <div class="k">Years in production</div>
+        <div class="n">3<span class="unit">+</span></div>
+        <div class="l">The platforms shipped in 2023 are still the ones in active use today.</div>
+      </div>
+      <div class="stat reveal rd-2">
+        <div class="k">Programs analyzed</div>
+        <div class="n">269</div>
+        <div class="l">Academic programs tracked across 62 peer institutions in the Portfolio Engine.</div>
+      </div>
+      <div class="stat reveal rd-3">
+        <div class="k">Off-the-shelf</div>
+        <div class="n">0<span class="unit">%</span></div>
+        <div class="l">Everything custom. If it doesn't fit your workflow, we don't ship it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Capabilities</span>
+      <h2 class="reveal">What we build.</h2>
+      <p class="caption reveal rd-1">Strategy, design, engineering, and infrastructure as a single continuous loop. Every platform ships with CI/CD, monitoring, and documentation.</p>
+    </div>
+
+    <div class="services-grid">
+      <article class="svc reveal">
+        <div class="svc-n">
+          <span>I · Web Applications</span>
+          <span class="sym">→</span>
+        </div>
+        <h3>Full-stack <em>apps,</em> shipped in weeks.</h3>
+        <p>Custom React + TypeScript applications on Google Cloud Run with Workload Identity Federation. Discovery to production without the usual six-month slog.</p>
+        <div class="svc-tags">
+          <span>React 19</span><span>TypeScript</span><span>Node.js</span><span>Prisma</span><span>Tailwind</span>
+        </div>
+      </article>
+
+      <article class="svc reveal rd-1">
+        <div class="svc-n">
+          <span>II · Cloud Infrastructure</span>
+          <span class="sym">→</span>
+        </div>
+        <h3>GCP <em>done right.</em></h3>
+        <p>Cloud Run, BigQuery, IAM, Secret Manager, and CI/CD pipelines with Workload Identity Federation. Staging-to-production promotion on every merge.</p>
+        <div class="svc-tags">
+          <span>Cloud Run</span><span>BigQuery</span><span>WIF</span><span>GitHub Actions</span>
+        </div>
+      </article>
+
+      <article class="svc reveal rd-2">
+        <div class="svc-n">
+          <span>III · Data &amp; Analytics</span>
+          <span class="sym">→</span>
+        </div>
+        <h3>Dashboards people <em>actually use.</em></h3>
+        <p>Interactive dashboards, data pipelines, and decision-support tools. SQL Server integration, BLS &amp; IPEDS datasets, real-time analytics your team can trust.</p>
+        <div class="svc-tags">
+          <span>Recharts</span><span>D3</span><span>BLS</span><span>IPEDS</span><span>PostgreSQL</span>
+        </div>
+      </article>
+
+      <article class="svc reveal rd-3">
+        <div class="svc-n">
+          <span>IV · AI Integration</span>
+          <span class="sym">→</span>
+        </div>
+        <h3>LLM features that <em>do real work.</em></h3>
+        <p>Gemini-powered credentialing, natural-language program analysis, AI-augmented workflows. Not chatbots — systems that replace hours of manual review.</p>
+        <div class="svc-tags">
+          <span>Gemini</span><span>RAG</span><span>Eval loops</span><span>Structured outputs</span>
+        </div>
+      </article>
+
+      <article class="svc reveal rd-4">
+        <div class="svc-n">
+          <span>V · Workflow Automation</span>
+          <span class="sym">→</span>
+        </div>
+        <h3>The manual work <em>disappears.</em></h3>
+        <p>Google Apps Script bridges, automated reporting, LOI pipelines, credential engines. If your team is copy-pasting between systems, we can probably kill that.</p>
+        <div class="svc-tags">
+          <span>Apps Script</span><span>Workflows</span><span>Sheets API</span><span>Cloud Functions</span>
+        </div>
+      </article>
+
+      <article class="svc reveal rd-5">
+        <div class="svc-n">
+          <span>VI · Consulting</span>
+          <span class="sym">→</span>
+        </div>
+        <h3>Senior partnership, <em>not a deck.</em></h3>
+        <p>Architecture review, vendor evaluation, digital transformation roadmaps, accreditation support. Thinking with you — not selling at you.</p>
+        <div class="svc-tags">
+          <span>Architecture</span><span>Roadmaps</span><span>Vendor eval</span><span>Accreditation</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Cases -->
+<section class="cases" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Portfolio</span>
+      <h2 class="reveal">Selected work.</h2>
+      <p class="caption reveal rd-1">Four platforms, live in production today — each built around real operational needs, not a product roadmap invented by a vendor.</p>
+    </div>
+  </div>
+
+  <!-- Case 01 — Faculty Flow -->
+  <article class="case">
+    <div class="wrap">
+      <div class="case-grid">
+        <div class="case-meta reveal">
+          <div class="case-idx">
+            <strong>Case 01</strong>
+            <span class="sep">/</span>
+            <span>Faculty credentialing</span>
+            <span class="sep">/</span>
+            <span class="tag">LIVE</span>
+          </div>
+          <h3 class="case-title">
+            Faculty <em>Flow.</em>
+            <span class="sm">— weeks of review, compressed to seconds.</span>
+          </h3>
+          <p class="case-lede">
+            An AI-powered credentialing engine that automates credential analysis, qualification mapping, and compliance reporting. Replaced weeks of manual review with instant, auditable results — and a paper trail accreditors actually like.
+          </p>
+          <div class="case-kpis">
+            <div class="case-kpi"><span class="v"><em>98</em>%</span><span class="k">time saved</span></div>
+            <div class="case-kpi"><span class="v">400+</span><span class="k">faculty</span></div>
+            <div class="case-kpi"><span class="v">5s</span><span class="k">avg. analysis</span></div>
+          </div>
+          <div class="case-stack">
+            <span>React</span><span>TypeScript</span><span>Cloud Run</span><span>Gemini AI</span><span>Sheets API</span>
+          </div>
+        </div>
+        <div class="case-shot reveal rd-1">
+          <div class="chrome">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="url">facultyflow.app</span>
+          </div>
+          <img src="img/facultyflow.png" alt="Faculty Flow credentialing dashboard">
+          <div class="case-shot-note">shipped <span class="red">— 2024</span></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Case 02 — LiFT -->
+  <article class="case">
+    <div class="wrap">
+      <div class="case-grid">
+        <div class="case-meta reveal">
+          <div class="case-idx">
+            <strong>Case 02</strong>
+            <span class="sep">/</span>
+            <span>Strategic assessment</span>
+            <span class="sep">/</span>
+            <span class="tag">LIVE</span>
+          </div>
+          <h3 class="case-title">
+            LiFT <em>Assessment.</em>
+            <span class="sm">— a 10-year plan, visible every Monday morning.</span>
+          </h3>
+          <p class="case-lede">
+            Progress tracking across K–Adult educational bands aligned with 10-year strategic goals. Multi-stakeholder dashboards with real-time visualization and institutional impact metrics — leadership finally sees the system as a system.
+          </p>
+          <div class="case-kpis">
+            <div class="case-kpi"><span class="v"><em>10</em>yr</span><span class="k">horizon</span></div>
+            <div class="case-kpi"><span class="v">K–Adult</span><span class="k">bands</span></div>
+            <div class="case-kpi"><span class="v">Real-time</span><span class="k">reporting</span></div>
+          </div>
+          <div class="case-stack">
+            <span>React</span><span>Prisma</span><span>Cloud Run</span><span>PostgreSQL</span><span>OAuth</span>
+          </div>
+        </div>
+        <div class="case-shot reveal rd-1">
+          <div class="chrome">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="url">lift.assessment</span>
+          </div>
+          <img src="img/lift.png" alt="LiFT Assessment Portal dashboard">
+          <div class="case-shot-note">shipped <span class="red">— 2025</span></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Case 03 — Portfolio Engine -->
+  <article class="case">
+    <div class="wrap">
+      <div class="case-grid">
+        <div class="case-meta reveal">
+          <div class="case-idx">
+            <strong>Case 03</strong>
+            <span class="sep">/</span>
+            <span>Program analytics</span>
+            <span class="sep">/</span>
+            <span class="tag">LIVE</span>
+          </div>
+          <h3 class="case-title">
+            Portfolio <em>Engine.</em>
+            <span class="sm">— 269 programs, one decision surface.</span>
+          </h3>
+          <p class="case-lede">
+            A decision-support platform analyzing academic programs against DFW rates, labor market demand, peer benchmarking, and competitive landscape intelligence across 62 institutions. Program review decisions that used to take months now take a meeting.
+          </p>
+          <div class="case-kpis">
+            <div class="case-kpi"><span class="v"><em>269</em></span><span class="k">programs</span></div>
+            <div class="case-kpi"><span class="v">62</span><span class="k">peer inst.</span></div>
+            <div class="case-kpi"><span class="v">BLS+IPEDS</span><span class="k">sources</span></div>
+          </div>
+          <div class="case-stack">
+            <span>React</span><span>Express</span><span>Recharts</span><span>BLS/IPEDS</span><span>Gemini AI</span>
+          </div>
+        </div>
+        <div class="case-shot reveal rd-1">
+          <div class="chrome">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="url">portfolio-engine</span>
+          </div>
+          <img src="img/portfolio.png" alt="Program Portfolio Decision Engine">
+          <div class="case-shot-note">shipped <span class="red">— 2025</span></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Case 04 — Network Partner Hub -->
+  <article class="case">
+    <div class="wrap">
+      <div class="case-grid">
+        <div class="case-meta reveal">
+          <div class="case-idx">
+            <strong>Case 04</strong>
+            <span class="sep">/</span>
+            <span>Partner CRM</span>
+            <span class="sep">/</span>
+            <span class="tag">LIVE</span>
+          </div>
+          <h3 class="case-title">
+            Network <em>Partner Hub.</em>
+            <span class="sm">— relationships, not rows in a spreadsheet.</span>
+          </h3>
+          <p class="case-lede">
+            Relationship management for a national network of partner sites. Tracks site agreements, faculty assignments, student placements, and automates Letter of Intent workflows end-to-end — from first contact through fully-executed agreement.
+          </p>
+          <div class="case-kpis">
+            <div class="case-kpi"><span class="v"><em>40</em>+</span><span class="k">partner sites</span></div>
+            <div class="case-kpi"><span class="v">Auto</span><span class="k">LOI flow</span></div>
+            <div class="case-kpi"><span class="v">Real-time</span><span class="k">sync</span></div>
+          </div>
+          <div class="case-stack">
+            <span>React 19</span><span>TypeScript</span><span>Cloud Run</span><span>Apps Script</span>
+          </div>
+        </div>
+        <div class="case-shot reveal rd-1">
+          <div class="chrome">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="url">network-crm</span>
+          </div>
+          <img src="img/network-crm.png" alt="Network Partner Hub CRM">
+          <div class="case-shot-note">shipped <span class="red">— 2026</span></div>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- Pull quote -->
+<section class="pullquote">
+  <div class="pullquote-wrap">
+    <blockquote class="pullquote-body">
+      “I don't just build software for institutions. <em>I use it every day.</em> That dual perspective — builder and end-user — is the whole point.”
+    </blockquote>
+    <div class="pullquote-attr">
+      <div class="avatar">J</div>
+      <div class="who">
+        <b>Justin Rose</b>
+        <span>Founder · VP Digital Strategy, SEU</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Method</span>
+      <h2 class="reveal">How we work.</h2>
+      <p class="caption reveal rd-1">Four phases. Weeks, not months. Working software inside the first month — not wireframes and promises.</p>
+    </div>
+
+    <div class="process-grid">
+      <div class="phase reveal">
+        <div class="phase-label">
+          <span class="big"><em>01.</em> Discovery</span>
+          <span class="sub">Week 1</span>
+        </div>
+        <div class="phase-tick"></div>
+        <div class="phase-body">
+          <h4>Map the workflows, the constraints, and the goals — before anyone touches a keyboard.</h4>
+          <p>We sit with your team, walk through real workflows, and ask the uncomfortable questions early. No assumptions. No pitch deck. Just listening, documenting, and turning institutional knowledge into something actionable.</p>
+        </div>
+        <div class="phase-delivers">
+          <b>Delivers</b>
+          <span>Workflow map</span>
+          <span>Success criteria</span>
+          <span>Constraints memo</span>
+        </div>
+      </div>
+
+      <div class="phase reveal rd-1">
+        <div class="phase-label">
+          <span class="big"><em>02.</em> Architecture</span>
+          <span class="sub">Weeks 2–3</span>
+        </div>
+        <div class="phase-tick"></div>
+        <div class="phase-body">
+          <h4>Data models, integrations, user flows, infrastructure — planned upfront, validated with you.</h4>
+          <p>We plan before we build. Schemas, auth flows, infrastructure diagrams, integration points — all reviewed with your team before a line of code ships. This is where six-month rewrites get prevented.</p>
+        </div>
+        <div class="phase-delivers">
+          <b>Delivers</b>
+          <span>Data model</span>
+          <span>Infra plan</span>
+          <span>Review doc</span>
+        </div>
+      </div>
+
+      <div class="phase reveal rd-2">
+        <div class="phase-label">
+          <span class="big"><em>03.</em> Build</span>
+          <span class="sub">Weeks 3–8</span>
+        </div>
+        <div class="phase-tick"></div>
+        <div class="phase-body">
+          <h4>Rapid development with continuous feedback — working software, early and often.</h4>
+          <p>Shipping to staging from day one. Your team sees real screens in real browsers by week three. Feedback loops are measured in days — not in "next sprint, we'll circle back." You stay in the loop; we stay in the code.</p>
+        </div>
+        <div class="phase-delivers">
+          <b>Delivers</b>
+          <span>Staging builds</span>
+          <span>Weekly reviews</span>
+          <span>CI/CD pipeline</span>
+        </div>
+      </div>
+
+      <div class="phase reveal rd-3">
+        <div class="phase-label">
+          <span class="big"><em>04.</em> Launch &amp; Support</span>
+          <span class="sub">Ongoing</span>
+        </div>
+        <div class="phase-tick"></div>
+        <div class="phase-body">
+          <h4>Production deployment with CI/CD, monitoring, and documentation — and someone who answers the phone.</h4>
+          <p>Launching is the middle, not the end. Monitoring, alerts, on-call, scheduled maintenance, and documentation your team can actually read. The platforms we've shipped are still the ones we maintain — that's the model.</p>
+        </div>
+        <div class="phase-delivers">
+          <b>Delivers</b>
+          <span>Monitoring</span>
+          <span>Runbooks</span>
+          <span>Maintenance SLA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Engagement models -->
+<section class="engage" id="engage">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Engagement</span>
+      <h2 class="reveal">How we take on work.</h2>
+      <p class="caption reveal rd-1">Three ways in &mdash; discovery, build, or ongoing. Fixed-scope proposals, no seat licenses, no surprise invoices.</p>
+    </div>
+
+    <div class="engage-grid">
+      <article class="engage-card reveal">
+        <div class="engage-head">
+          <span class="engage-n">A</span>
+          <span class="engage-tag">1–2 weeks</span>
+        </div>
+        <h3>Discovery Sprint</h3>
+        <p>A short, fixed-fee engagement to map workflows, interview stakeholders, and draft the architecture memo. The best way in if the scope isn't settled yet.</p>
+        <ul class="engage-list">
+          <li>Stakeholder interviews</li>
+          <li>Workflow &amp; constraint map</li>
+          <li>Architecture memo</li>
+          <li>Scoped build proposal</li>
+        </ul>
+        <div class="engage-foot">
+          <span class="price">Fixed fee · Credited against build</span>
+        </div>
+      </article>
+
+      <article class="engage-card featured reveal rd-1">
+        <div class="engage-head">
+          <span class="engage-n">B</span>
+          <span class="engage-tag">8–16 weeks</span>
+        </div>
+        <h3>Platform Build</h3>
+        <p>Custom platform, designed and shipped end-to-end. Working software in your hands inside the first month; production deployment, CI/CD, and documentation by the end.</p>
+        <ul class="engage-list">
+          <li>Design, engineering, infra</li>
+          <li>Staging from week one</li>
+          <li>Production deploy + runbooks</li>
+          <li>30-day launch warranty</li>
+        </ul>
+        <div class="engage-foot">
+          <span class="price">Project-based · Fixed scope</span>
+        </div>
+      </article>
+
+      <article class="engage-card reveal rd-2">
+        <div class="engage-head">
+          <span class="engage-n">C</span>
+          <span class="engage-tag">Monthly</span>
+        </div>
+        <h3>Ongoing Partnership</h3>
+        <p>Retainer for monitoring, maintenance, and continuous improvement. The platforms we shipped in 2023 are still on this plan &mdash; we don't hand off and vanish.</p>
+        <ul class="engage-list">
+          <li>Monitoring &amp; uptime</li>
+          <li>Scheduled maintenance</li>
+          <li>Priority feature work</li>
+          <li>On-call escalation</li>
+        </ul>
+        <div class="engage-foot">
+          <span class="price">Retainer · Sized to platform</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- What we do / don't do -->
+<section class="honest">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Principles</span>
+      <h2 class="reveal">What we do &mdash; and don't.</h2>
+      <p class="caption reveal rd-1">A small shop with a short list. The clarity is the point.</p>
+    </div>
+
+    <div class="honest-grid">
+      <div class="honest-col yes reveal">
+        <h3>We do <span class="mark">✓ Yes</span></h3>
+        <ul class="honest-list">
+          <li><span class="idx">01</span><span class="t">Build custom platforms around real workflows &mdash; not templates, not themes.</span></li>
+          <li><span class="idx">02</span><span class="t">Ship software in weeks, then maintain it for years.</span></li>
+          <li><span class="idx">03</span><span class="t">Sit with your team &mdash; faculty, staff, leadership &mdash; before architecture is written.</span></li>
+          <li><span class="idx">04</span><span class="t">Write documentation humans can read. Monitoring humans can trust.</span></li>
+          <li><span class="idx">05</span><span class="t">Own the stack we ship &mdash; Cloud Run, BigQuery, Postgres, React.</span></li>
+          <li><span class="idx">06</span><span class="t">Partner long-term. The platforms we built in 2023 are still the ones we run.</span></li>
+        </ul>
+      </div>
+
+      <div class="honest-col no reveal rd-1">
+        <h3>We don't <span class="mark">✗ No</span></h3>
+        <ul class="honest-list">
+          <li><span class="idx">01</span><span class="t">Sell SaaS licenses that expire the day you need a new feature.</span></li>
+          <li><span class="idx">02</span><span class="t">Write 80-page decks before showing working software.</span></li>
+          <li><span class="idx">03</span><span class="t">Pretend a one-size-fits-all vendor platform will fit your institution.</span></li>
+          <li><span class="idx">04</span><span class="t">Hand off to an offshore team the day the statement of work clears.</span></li>
+          <li><span class="idx">05</span><span class="t">Charge for roadmaps we never planned to build.</span></li>
+          <li><span class="idx">06</span><span class="t">Take on work we can't ship with the quality our name's on.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">The team</span>
+      <h2 class="reveal">The studio.</h2>
+      <p class="caption reveal rd-1">One operator, a deliberate scope — and real skin in the game.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-portrait reveal">
+        <div class="about-portrait-head">
+          <span>Founder / Lead Engineer</span>
+          <span>2023 →</span>
+        </div>
+        <div class="about-portrait-init">JR</div>
+        <div class="about-portrait-foot">
+          <div class="who">
+            <b>Justin Rose</b>
+            <span>Lakeland, FL</span>
+          </div>
+          <span class="sig">—j.</span>
+        </div>
+      </div>
+
+      <div class="about-text">
+        <h3 class="reveal rd-1">
+          Built by someone who understands your world &mdash; <em>because he lives in it.</em>
+        </h3>
+        <p class="reveal rd-2">
+          REDTech Solutions is led by Justin Rose — a technologist who has spent his entire career inside higher education. As Vice Provost of Digital Strategy at Southeastern University, he doesn't just build software for institutions: he uses it, maintains it, and depends on it every day.
+        </p>
+        <p class="reveal rd-3">
+          That dual perspective — builder and end-user — means every platform we create is designed around how institutions actually work, not how a vendor imagines they do. The result: systems that stick, teams that trust them, and outcomes you can measure.
+        </p>
+        <div class="about-fact reveal rd-4">
+          <div class="f"><b>10+ yrs</b><span>In Higher Ed IT</span></div>
+          <div class="f"><b>SEU</b><span>VP Digital Strategy</span></div>
+          <div class="f"><b>Google Cloud</b><span>Platform of record</span></div>
+        </div>
+        <p class="reveal rd-5" style="font-size: 1.05rem; line-height: 1.55; color: var(--ink); max-width: 46ch; padding: 1.25rem 0 0; border-top: 1px solid var(--rule-soft); font-weight: 500;">
+          “The goal isn't to ship software. The goal is to ship outcomes &mdash; the software is just the vehicle.”
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">FAQ</span>
+      <h2 class="reveal">Questions we get on every call.</h2>
+      <p class="caption reveal rd-1">Short answers to the ones that always come up before a scope lands.</p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>
+          <span class="faq-num">01</span>
+          <span>How do engagements typically start?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </summary>
+        <div class="faq-body">
+          A 30-minute intro call, followed by a short Discovery Sprint to map workflows and draft the architecture memo. Nothing gets built until the scope is clear and the success criteria are on paper.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-num">02</span>
+          <span>Who owns the code and the infrastructure?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </summary>
+        <div class="faq-body">
+          You do. Code lives in your GitHub organization; infrastructure deploys to your Google Cloud project; domains and data are yours. There are no REDTech licenses, no shared tenancy, and nothing held hostage.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-num">03</span>
+          <span>Do you work with our internal team?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </summary>
+        <div class="faq-body">
+          Usually, yes. Most engagements pair with an internal developer, IT staff, or data team. The goal is to leave your organization better equipped to maintain the platform &mdash; not dependent on us forever.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-num">04</span>
+          <span>What about privacy, security, and FERPA?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </summary>
+        <div class="faq-body">
+          Platforms are designed for higher-ed and regulated environments from day one: SSO through your identity provider, least-privilege IAM, audit logging, and data residency in your cloud. FERPA and compliance specifics are scoped explicitly in the architecture memo.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-num">05</span>
+          <span>How is pricing structured?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </summary>
+        <div class="faq-body">
+          Discovery sprints are fixed-fee and credited against the build. Platform builds are project-based with fixed scope and fixed price. Ongoing partnerships are a monthly retainer sized to the platform. No hourly billing, no seat licenses, no per-user uplift.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-num">06</span>
+          <span>What happens after launch?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </summary>
+        <div class="faq-body">
+          The platforms we ship are the ones we run. Most clients stay on an ongoing partnership for monitoring, feature work, and the occasional late-night incident &mdash; the ones that don't still get 30 days of launch warranty and full documentation on the way out.
+        </div>
+      </details>
+    </div>
+
+    <div class="faq-foot">
+      <p><b>Still have a question?</b> Drop a note and you'll hear back the same day.</p>
+      <a href="#contact" class="btn primary">
+        Book a 30-min call
+        <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="cta-inner">
+      <div>
+        <h2 class="cta-title">Ready to build<br>something real?</h2>
+        <div class="cta-side-note">Currently taking on 2026 Q2 &amp; Q3 engagements</div>
+      </div>
+
+      <div class="cta-contact">
+        <a href="mailto:justin.edw.rose@gmail.com?subject=Book%20a%2030-min%20intro%20call%20%E2%80%94%20REDTech&amp;body=Hi%20Justin%2C%0A%0AI%27d%20like%20to%20book%20a%2030-minute%20intro%20call%20to%20talk%20about%20a%20potential%20project.%20A%20few%20times%20that%20work%20for%20me%3A%0A%0A-%20%0A-%20%0A-%20%0A%0AA%20quick%20sentence%20or%20two%20on%20what%20we%27re%20trying%20to%20solve%3A%0A%0A">
+          <span class="k">Book a call</span>
+          <span class="v">30-min intro &mdash; prefilled email</span>
+          <span class="arr">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </span>
+        </a>
+        <a href="mailto:justin.edw.rose@gmail.com">
+          <span class="k">Email</span>
+          <span class="v">justin.edw.rose@gmail.com</span>
+          <span class="arr">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </span>
+        </a>
+        <a href="tel:+18505166913">
+          <span class="k">Phone</span>
+          <span class="v">850 · 516 · 6913</span>
+          <span class="arr">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </span>
+        </a>
+        <a href="#" onclick="return false">
+          <span class="k">Office</span>
+          <span class="v">304 E Pine St · Lakeland</span>
+          <span class="arr">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#" class="logo">
+          <span class="logo-mark">R</span>
+          <span class="logo-text">
+            <b>REDTech</b>
+            <span>Solutions · Lakeland, FL</span>
+          </span>
+        </a>
+        <p>Custom software for institutions that matter. Based in Lakeland, Florida — serving mission-driven clients nationwide.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Studio</h5>
+        <ul>
+          <li><a href="#work">Selected work</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:justin.edw.rose@gmail.com">Email</a></li>
+          <li><a href="tel:+18505166913">Phone</a></li>
+          <li><a href="#contact">Start a project</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Stack</h5>
+        <ul>
+          <li>React · TypeScript</li>
+          <li>Google Cloud · BigQuery</li>
+          <li>Prisma · PostgreSQL</li>
+          <li>Gemini · Apps Script</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>© 2026 REDTech Solutions LLC · All rights reserved</span>
+      <span>304 E Pine Street · Lakeland, FL 33801</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('vis');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Nav scroll state
+const nav = document.getElementById('nav');
+let lastY = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 40);
+  lastY = y;
+}, { passive: true });
+
+// Mobile menu
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    const spans = navToggle.querySelectorAll('span');
+    spans[0].style.transform = open ? 'rotate(45deg) translate(3px, 4px)' : '';
+    spans[1].style.opacity = open ? '0' : '1';
+    spans[2].style.transform = open ? 'rotate(-45deg) translate(3px, -4px)' : '';
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.querySelectorAll('span').forEach(s => { s.style.transform=''; s.style.opacity='1'; });
+    });
+  });
+}
+
+// Smooth scroll with sticky-nav offset
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    const id = this.getAttribute('href');
+    if (!id || id === '#' || id.length < 2) return;
+    const t = document.querySelector(id);
+    if (!t) return;
+    e.preventDefault();
+    const offset = nav.offsetHeight + 12;
+    window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+  });
+});
+
+</script>
+</body>
+</html>
