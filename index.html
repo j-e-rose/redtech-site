@@ -383,11 +383,15 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .hero-stack {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 0.6rem;
   min-height: 0;
 }
+.hero-stack > .hero-shot:nth-child(1),
+.hero-stack > .hero-shot:nth-child(2),
+.hero-stack > .hero-shot:nth-child(3) { grid-column: span 2; }
+.hero-stack > .hero-shot:nth-child(4),
+.hero-stack > .hero-shot:nth-child(5) { grid-column: span 3; }
 .hero-shot {
   position: relative;
   display: block;
@@ -1838,10 +1842,14 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
               <div class="chrome"><span></span><span></span><span class="label">Network Hub</span></div>
               <img src="img/network-crm.png" alt="Network Partner Hub CRM" loading="eager">
             </a>
+            <a class="hero-shot" href="#case-course-eval" aria-label="Read the Course Evaluation case study">
+              <div class="chrome"><span></span><span></span><span class="label">Course Eval</span></div>
+              <img src="img/course-eval.png" alt="SEU Course Evaluation analytics" loading="eager">
+            </a>
           </div>
 
           <div class="hero-case-caption">
-            <span class="big">Four platforms, in production today.</span>
+            <span class="big">Five platforms, in production today.</span>
             <span class="meta">Tap any to read the case &rarr;</span>
           </div>
         </aside>
@@ -2010,7 +2018,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     <div class="section-head">
       <span class="section-num">Portfolio</span>
       <h2 class="reveal">Selected work.</h2>
-      <p class="caption reveal rd-1">Four platforms, live in production today — each built around real operational needs, not a product roadmap invented by a vendor.</p>
+      <p class="caption reveal rd-1">Five platforms, live in production today — each built around real operational needs, not a product roadmap invented by a vendor.</p>
     </div>
   </div>
 
@@ -2168,6 +2176,46 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
             <span class="url">network-crm</span>
           </div>
           <img src="img/network-crm.png" alt="Network Partner Hub CRM">
+          <div class="case-shot-note">shipped <span class="red">— 2026</span></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Case 05 — Course Evaluations -->
+  <article class="case" id="case-course-eval">
+    <div class="wrap">
+      <div class="case-grid">
+        <div class="case-meta reveal">
+          <div class="case-idx">
+            <strong>Case 05</strong>
+            <span class="sep">/</span>
+            <span>Student feedback analytics</span>
+            <span class="sep">/</span>
+            <span class="tag">LIVE</span>
+          </div>
+          <h3 class="case-title">
+            Course <em>Evaluations.</em>
+            <span class="sm">— eight years of anonymous student feedback, finally legible.</span>
+          </h3>
+          <p class="case-lede">
+            Faculty self-service plus institutional analytics over every course evaluation in MyFire since 2018. Two instruments — legacy IDEA-style and the current 16-item teaching-practice block — harmonized into one stable concept layer so career trends survive the instrument transition. Per-course PDF reports, bulk export across an entire teaching career, anonymity-preserving thresholds baked in.
+          </p>
+          <div class="case-kpis">
+            <div class="case-kpi"><span class="v"><em>218</em>K</span><span class="k">responses</span></div>
+            <div class="case-kpi"><span class="v">17K</span><span class="k">courses</span></div>
+            <div class="case-kpi"><span class="v">1.4K</span><span class="k">faculty</span></div>
+          </div>
+          <div class="case-stack">
+            <span>React 19</span><span>TypeScript</span><span>Express</span><span>SQLite</span><span>Cloud Run</span><span>PDFKit</span>
+          </div>
+        </div>
+        <div class="case-shot reveal rd-1">
+          <div class="chrome">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="url">course-eval</span>
+          </div>
+          <img src="img/course-eval.png" alt="SEU Course Evaluation analytics dashboard">
           <div class="case-shot-note">shipped <span class="red">— 2026</span></div>
         </div>
       </div>
