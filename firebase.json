@@ -4,8 +4,8 @@
     "public": ".",
     "ignore": [
       "firebase.json",
-      ".firebase",
-      ".firebaserc"
+      "**/.*",
+      "**/node_modules/**"
     ]
   }
 }
