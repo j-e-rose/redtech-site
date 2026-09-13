@@ -126,10 +126,9 @@ if ('IntersectionObserver' in window) {
       });
     });
   }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
-  navLinks.forEach(link => {
-    const section = document.querySelector(link.hash);
-    if (section) sectionObserver.observe(section);
-  });
+  // Observe the hero and unlisted sections too, so a previous link does not
+  // remain highlighted after scrolling outside its section.
+  document.querySelectorAll('main > section').forEach(section => sectionObserver.observe(section));
 }
 document.getElementById('year').textContent = new Date().getFullYear();
 document.querySelectorAll('[data-track]').forEach(link => {
