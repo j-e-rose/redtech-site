@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f7f6f2"/>
+  <g transform="translate(65 53)">
+    <rect width="48" height="48" rx="12" fill="#c83b2b"/>
+    <path fill="#fff8ef" transform="translate(7 5) scale(.63)" d="M19 14h17c9 0 14 5 14 13 0 6-3 10-8 12l10 14H40L28 36v17H18V14Zm10 9v10h6c4 0 6-2 6-5s-2-5-6-5Z"/>
+    <text x="62" y="32" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700" letter-spacing="-1.5" fill="#252823">REDTech</text>
+    <text x="1028" y="28" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="2.5" fill="#646860">INDEPENDENT TECHNOLOGY STUDIO</text>
+  </g>
+  <path d="M65 136h1070" stroke="#ddded5"/>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="500" letter-spacing="-4.5">
+    <text x="62" y="286" fill="#252823">Good technology.</text>
+    <text x="62" y="381" fill="#c83b2b">Greater impact.</text>
+  </g>
+  <g transform="translate(945 252) rotate(-12)">
+    <rect x="-30" y="-30" width="210" height="210" rx="105" fill="#e9ece3"/>
+    <g fill="#c83b2b"><path d="M0 0h69v69H0zM78 0h69v69H78zM0 78h69v69H0z"/><path d="M78 78h69v69H78z" opacity=".22"/></g>
+  </g>
+  <text x="65" y="454" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#646860">Custom software for higher education and mission-driven organizations.</text>
+  <path d="M65 522h1070" stroke="#ddded5"/>
+  <text x="65" y="575" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#252823">redtech.app</text>
+  <text x="1135" y="574" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#646860">Lakeland, Florida · Working nationwide</text>
+</svg>
