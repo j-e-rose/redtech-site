@@ -14,6 +14,8 @@ The WebP screenshots are optimized copies of the existing, redacted PNG portfoli
 
 ## Deployment
 
+CSS and JavaScript URLs in `index.html` include the first 12 characters of each file’s SHA-256 hash as a `v` query parameter. Refresh those values whenever either file changes, so returning visitors cannot combine new markup with cached assets. Firebase serves the root page and HTML with `Cache-Control: no-cache`.
+
 Pushes to `main` deploy through `.github/workflows/deploy.yml` to Firebase Hosting site `redtech-strategy`, project `studio-8747237902-e6930`, owned by `justin.edw.rose@gmail.com`. The repository is `j-e-rose/redtech-site`. This is separate from SEU's GCP projects.
 
 Verify desktop and phone layouts, all four challenge choices (including arrow-key selection), category filters, deep links, keyboard navigation, FAQ disclosures, and image dialogs before pushing. Check brief topic/stage context, required text, review/edit, email encoding, and clipboard feedback without sending a test inquiry. Run `node --check assets/site.js` and `git diff --check` for basic source checks. Analytics runs only on the production hostnames; local and preview hosts are excluded.
