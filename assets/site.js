@@ -33,9 +33,9 @@ mobileQuery.addEventListener('change', () => closeMenu());
 
 // User-controlled previews: no autoplay, timers, or motion required to read the hero.
 const featuredProjects = [
-  { name: 'Faculty Flow', id: 'faculty-flow', image: 'facultyflow', alt: 'Faculty Flow credentialing dashboard' },
-  { name: 'Portfolio Engine', id: 'portfolio', image: 'portfolio', alt: 'Portfolio Engine program analytics dashboard' },
-  { name: 'Course Evaluations', id: 'course-eval', image: 'course-eval', alt: 'Course Evaluations teaching feedback dashboard' },
+  { name: 'Faculty Flow', id: 'faculty-flow', image: 'facultyflow', alt: 'Faculty Flow credentialing dashboard', category: '01 / A simpler workflow', outcome: 'From credentials\nto a clear decision.', proof: 'Supporting 400+ faculty' },
+  { name: 'Portfolio Engine', id: 'portfolio', image: 'portfolio', alt: 'Portfolio Engine program analytics dashboard', category: '02 / A shared view', outcome: 'The whole portfolio.\nA clearer perspective.', proof: '269 programs · 62 peer institutions' },
+  { name: 'Course Evaluations', id: 'course-eval', image: 'course-eval', alt: 'Course Evaluations teaching feedback dashboard', category: '03 / More useful feedback', outcome: 'Years of feedback.\nInsights you can use.', proof: '218K responses in one experience' },
 ];
 document.querySelector('.hero-selectors').hidden = false;
 document.querySelectorAll('[data-feature]').forEach(button => {
@@ -45,6 +45,9 @@ document.querySelectorAll('[data-feature]').forEach(button => {
     image.src = `img/${project.image}.webp`;
     image.alt = project.alt;
     document.getElementById('hero-project-name').textContent = project.name;
+    document.getElementById('hero-category').textContent = project.category;
+    document.getElementById('hero-outcome').textContent = project.outcome;
+    document.getElementById('hero-proof').textContent = project.proof;
     document.getElementById('hero-window-label').textContent = `${project.name} / Overview`;
     ['hero-window', 'hero-project-link'].forEach(id => {
       const link = document.getElementById(id);
@@ -78,6 +81,7 @@ function revealLinkedProject(hash, scroll = false) {
   const target = document.getElementById(id);
   if (!target?.classList.contains('project')) return;
   if (target.hidden) filterProjects('all');
+  target.querySelector('details').open = true;
   if (scroll) target.scrollIntoView({ block: 'start', behavior: 'instant' });
 }
 document.querySelectorAll('a[href^="#"]').forEach(link => {
@@ -134,7 +138,141 @@ document.getElementById('year').textContent = new Date().getFullYear();
 document.querySelectorAll('[data-track]').forEach(link => {
   link.addEventListener('click', () => {
     if (typeof window.gtag === 'function') {
-      window.gtag('event', 'contact_click', { placement: link.dataset.track });
+      const eventName = link.getAttribute('href').startsWith('#') ? 'explore_click' : 'contact_click';
+      window.gtag('event', eventName, { placement: link.dataset.track });
     }
   });
+});
+
+// Each route pairs a visitor's challenge with a concrete example from the portfolio.
+const challengeRoutes = {
+  workflows: {
+    title: 'Less chasing.\nMore moving forward.',
+    description: 'Bring the people, documents, and decisions into one workflow, with automation for the repetitive parts and people in control of the important ones.',
+    output: 'Where work gets stuck, who needs to act, and which steps can happen automatically.',
+    project: 'Faculty Flow', id: 'faculty-flow', detail: 'Credential review in one workspace', cta: 'Let’s untangle your workflow',
+  },
+  data: {
+    title: 'A shared picture.\nA more confident decision.',
+    description: 'Connect scattered reports and data sources into a clear view of what is happening, with the context your team needs to decide what comes next.',
+    output: 'The decisions you need to make, the evidence behind them, and the data you can trust.',
+    project: 'Portfolio Engine', id: 'portfolio', detail: '269 programs, one decision workspace', cta: 'Let’s make your data useful',
+  },
+  platform: {
+    title: 'A system that fits\nthe way you work.',
+    description: 'Shape a platform around your team’s real responsibilities, with connected records and handoffs that make sense to the people using it.',
+    output: 'What to keep, what to connect, and where a custom experience would make the biggest difference.',
+    project: 'Network Partner Hub', id: 'network', detail: 'Relationships and agreements, connected', cta: 'Let’s shape your platform',
+  },
+  strategy: {
+    title: 'A big ambition.\nA practical next step.',
+    description: 'Turn an open question into a shared direction for technology or learning, grounded in your mission, your people, and the resources you actually have.',
+    output: 'The outcome that matters, the constraints to work within, and a first step worth taking.',
+    project: 'LiFT Assessment', id: 'lift', detail: 'A ten-year vision made visible', cta: 'Let’s find a way forward',
+  },
+};
+const challengeChoices = document.querySelector('.challenge-choices');
+challengeChoices.hidden = false;
+challengeChoices.addEventListener('change', event => {
+  const route = challengeRoutes[event.target.value];
+  if (!route) return;
+  document.getElementById('finder-title').textContent = route.title;
+  document.getElementById('finder-description').textContent = route.description;
+  document.getElementById('finder-output').textContent = route.output;
+  document.getElementById('finder-case').href = `#case-${route.id}`;
+  document.getElementById('finder-case-name').textContent = `${route.project} →`;
+  document.getElementById('finder-case-detail').textContent = route.detail;
+  const contactLink = document.getElementById('finder-contact');
+  contactLink.firstChild.textContent = `${route.cta} `;
+  contactLink.dataset.interest = event.target.value;
+  document.getElementById('finder-status').textContent = `${route.title.replace('\n', ' ')} See ${route.project} for a related example.`;
+});
+
+// Briefs stay in page memory. Only the visitor's email app sends the message.
+const briefForm = document.getElementById('brief-form');
+const briefReview = document.getElementById('brief-review');
+const briefInterest = document.getElementById('brief-interest');
+const briefStage = document.getElementById('brief-stage');
+const briefChallenge = document.getElementById('brief-challenge');
+const briefContext = document.getElementById('brief-context');
+const briefText = document.getElementById('brief-text');
+const briefStatus = document.getElementById('brief-status');
+let relatedProject = '';
+let briefEmailUrl = 'mailto:justin.edw.rose@gmail.com';
+document.querySelector('.brief-builder').hidden = false;
+
+function editBrief(focus = false) {
+  briefForm.hidden = false;
+  briefReview.hidden = true;
+  briefStatus.textContent = '';
+  if (focus) briefChallenge.focus();
+}
+
+function setProjectContext(name = '') {
+  relatedProject = name;
+  briefContext.hidden = !name;
+  briefContext.querySelector('span').textContent = name ? `Inspired by ${name}` : '';
+}
+
+document.querySelectorAll('[data-interest], [data-engagement]').forEach(link => {
+  link.href = '#brief-form';
+  link.addEventListener('click', event => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    editBrief();
+    if (link.dataset.interest) briefInterest.value = link.dataset.interest;
+    if (link.dataset.engagement) briefStage.value = link.dataset.engagement;
+    setProjectContext(link.dataset.project);
+    briefInterest.focus({ preventScroll: true });
+  });
+});
+document.getElementById('clear-context').addEventListener('click', () => {
+  setProjectContext();
+  briefInterest.focus();
+});
+briefInterest.addEventListener('change', () => setProjectContext());
+briefChallenge.addEventListener('input', () => {
+  briefChallenge.setCustomValidity('');
+  document.getElementById('brief-count').textContent = `${briefChallenge.value.length} / 600`;
+});
+briefForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const challenge = briefChallenge.value.trim();
+  if (!challenge) {
+    briefChallenge.setCustomValidity('Add a sentence about what you would like to improve.');
+    briefChallenge.reportValidity();
+    return;
+  }
+  const topic = briefInterest.selectedOptions[0].textContent;
+  const stage = briefStage.selectedOptions[0].textContent;
+  const lines = [
+    'Hi Justin,', '', 'I’d like to explore a project with REDTech.', '',
+    `Focus: ${topic}`, `Starting point: ${stage}`,
+    ...(relatedProject ? [`Portfolio reference: ${relatedProject}`] : []),
+    '', 'What we’d like to improve:', challenge, '', 'Let’s talk about a useful next step.',
+  ];
+  const text = lines.join('\n');
+  briefText.value = text;
+  briefEmailUrl = `mailto:justin.edw.rose@gmail.com?subject=${encodeURIComponent(`REDTech project — ${topic}`)}&body=${encodeURIComponent(text)}`;
+  briefForm.hidden = true;
+  briefReview.hidden = false;
+  briefStatus.textContent = '';
+  document.getElementById('brief-review-title').focus({ preventScroll: true });
+  document.getElementById('brief-review-title').scrollIntoView({ block: 'start', behavior: 'instant' });
+});
+// Keep the generated message out of link attributes, where automatic outbound
+// analytics could collect it. Opening the email draft remains a visitor action.
+document.getElementById('brief-email').addEventListener('click', event => {
+  event.preventDefault();
+  window.location.assign(briefEmailUrl);
+});
+document.getElementById('edit-brief').addEventListener('click', () => editBrief(true));
+document.getElementById('copy-brief').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(briefText.value);
+    briefStatus.textContent = 'Brief copied. Paste it into an email to Justin.';
+  } catch {
+    briefText.focus();
+    briefText.select();
+    briefStatus.textContent = 'Your brief is selected. Use your device’s Copy command, then paste it into your email.';
+  }
 });

@@ -6,7 +6,9 @@ Static marketing site at https://redtech.app. No build step or runtime dependenc
 
 Run `python3 -m http.server 4173 --bind 127.0.0.1`, then open http://127.0.0.1:4173.
 
-`index.html` contains the content. `assets/site.css` holds the responsive design, and `assets/site.js` adds project filters, featured-project selection, mobile navigation, and native image dialogs. Case details and FAQs use native disclosure elements. Core content and navigation remain available without JavaScript. Fonts are self-hosted with their licenses in `assets/fonts/`.
+`index.html` contains the content. `assets/site.css` holds the responsive design, and `assets/site.js` adds a challenge picker, project filters, featured-project selection, mobile navigation, native image dialogs, and a project brief builder. Case details and FAQs use native disclosure elements. Core content, portfolio details, calendar, and email links remain available without JavaScript. Fonts are self-hosted with their licenses in `assets/fonts/`.
+
+The challenge picker connects four common problems to relevant portfolio examples. Project deep links reveal filtered projects and expand their stories. Service, project, and engagement links carry their context into the brief builder; typed details are retained when visitors return to editing. Visitors review the brief before opening a prefilled email draft, or copy it for use in their own mail client. Brief content stays in page memory: there is no form backend, browser storage, or automatic sending. Analytics records fixed link placements, never the brief text; internal exploration and outbound contact clicks are separate events.
 
 The WebP screenshots are optimized copies of the existing, redacted PNG portfolio assets. Full-size previews use the original PNGs; preserve their redactions when replacing images. Portfolio work includes both institutional and consulting projects.
 
@@ -14,6 +16,6 @@ The WebP screenshots are optimized copies of the existing, redacted PNG portfoli
 
 Pushes to `main` deploy through `.github/workflows/deploy.yml` to Firebase Hosting site `redtech-strategy`, project `studio-8747237902-e6930`, owned by `justin.edw.rose@gmail.com`. The repository is `j-e-rose/redtech-site`. This is separate from SEU's GCP projects.
 
-Verify desktop and phone layouts, category filters, deep links, keyboard navigation, FAQ disclosures, and image dialogs before pushing. Run `node --check assets/site.js` and `git diff --check` for basic source checks. Analytics runs only on the production hostnames; local and preview hosts are excluded.
+Verify desktop and phone layouts, all four challenge choices (including arrow-key selection), category filters, deep links, keyboard navigation, FAQ disclosures, and image dialogs before pushing. Check brief topic/stage context, required text, review/edit, email encoding, and clipboard feedback without sending a test inquiry. Run `node --check assets/site.js` and `git diff --check` for basic source checks. Analytics runs only on the production hostnames; local and preview hosts are excluded.
 
 To roll back a release, revert its commit and push to `main`, then verify the Firebase deploy workflow completes successfully.
